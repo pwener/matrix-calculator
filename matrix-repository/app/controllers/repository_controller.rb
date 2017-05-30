@@ -10,13 +10,24 @@ class RepositoryController < ApplicationController
 
   # GET /pair_out
   def pair_out
-    puts "remove and return"
+    tasks = TaskStack.instance.pop
+
+    render json: tasks.to_json
   end
 
   # GET /read_pair
   def read_pair
     tasks = TaskStack.instance.get(params[:index])
-    puts tasks.to_json
+
+    render json: tasks.to_json
+  end
+
+  # GET /read_all
+  # Extra method:
+  # Read all pairs of repository
+  def read_all
+    tasks = TaskStack.instance.all
+
     render json: tasks.to_json
   end
 

@@ -5,6 +5,7 @@ class TaskStack
 
   def initialize
     @tasks = Array.new
+    @mutex = Mutex.new
   end
 
   def put(index, content)
@@ -13,14 +14,29 @@ class TaskStack
 
   def get(index)
     # tasks array the element
-    puts "Size of stack is #{@tasks}"
-
+    puts "Size of stack is #{@tasks.length}"
     puts "Request index #{index}"
 
     hash = @tasks.select { |element| element[:index] == index }
 
-    puts "return hash length #{hash}"
+    return hash
+  end
+
+  def all
+    @tasks
+  end
+
+  def pop
+    hash = nil
+
+    @mutex.synchronize do
+      index = @tasks.last[:index]
+      hash = get(index)
+      puts "pop elements with index #{index}"
+      @tasks.delete_if { |element| element[:index] == index }
+    end
 
     return hash
   end
+
 end
