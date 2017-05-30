@@ -15,6 +15,23 @@ def print_matrix(M):
     [print(element) for element in M]
 
 
+def repo_request(key, value):
+    # repr converts code to string
+    r = requests.post(REPOSITORY_URL + repr(key) + '/' + value)
+
+
+def to_hash(arr):
+    final_hash = '{'
+
+    for element in arr:
+        final_hash += str(element) + ','
+
+    # [-1] removes last ','
+    final_hash = final_hash[:-1] + '}'
+
+    return final_hash
+
+
 # Create pairs to multiply AxB
 def create_pairs_with(A, B):
     # B[0] or A is the order
@@ -22,16 +39,11 @@ def create_pairs_with(A, B):
 
     for index, line in enumerate(A):
         # set converts [] to {}
-        repo_request('A'+str(index), set(line))
+        repo_request('A'+str(index), to_hash(line))
 
     for index in range(order):
         column = [c[index] for c in B]
-        repo_request('B'+str(index), set(column))
-
-
-def repo_request(key, value):
-    # repr converts code to string
-    r = requests.post(REPOSITORY_URL + repr(key) + '/' + repr(value))
+        repo_request('B'+str(index), to_hash(column))
 
 
 if __name__ == '__main__':
