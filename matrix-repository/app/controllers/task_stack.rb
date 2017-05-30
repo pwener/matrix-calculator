@@ -39,4 +39,8 @@ class TaskStack
     return hash
   end
 
+  def clear
+    @tasks = Array.new
+  end
+
 end

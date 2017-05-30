@@ -31,6 +31,12 @@ class RepositoryController < ApplicationController
     render json: tasks.to_json
   end
 
+  def reset
+    tasks = TaskStack.instance.clear
+
+    redirect_to action: 'read_all'
+  end
+
   private
 
   def repository_params

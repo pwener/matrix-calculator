@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get  'repository/pair_out/' => 'repository#pair_out'
   get  'repository/read_pair/:index' => 'repository#read_pair'
   get  'repository/read_all' => 'repository#read_all'
+  get  'repository/reset' => 'repository#reset'
 end
