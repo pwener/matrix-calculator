@@ -9,7 +9,9 @@ class TaskStack
   end
 
   def put(index, content)
-    @tasks.push(index: index, content: content)
+    @mutex.synchronize do
+      @tasks.push(index: index, content: content)
+    end
   end
 
   def get(index)
