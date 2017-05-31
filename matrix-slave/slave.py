@@ -3,6 +3,7 @@ import requests
 import simplejson as json
 import ast
 import sys
+import time
 
 REPOSITORY_URL = "http://localhost:3000/repository"
 
@@ -32,28 +33,34 @@ if __name__ == '__main__':
 
     task_dir = None
 
-    for i in range(0, order):
-        for j in range(0, order):
-            key = str(i) + 'x' + str(j)
-            try:
-                get_task = urllib.request.urlopen(REPOSITORY_URL+"/pair_out/"+key)
-                task_json = get_task.read()
-                task_dir = json.loads(task_json)
-            except urllib.error.HTTPError:
-                print("Item not avaliable, try next")
-                break
+    # Executa infinitamente
+    while (True):
 
-            print(task_dir)
+        # Not so fast
+        time.sleep(0.5)
 
-            # Ever the index 0 is A and 1 is B
-            matrix_a = task_dir[0]
-            matrix_b = task_dir[1]
+        for i in range(0, order):
+            for j in range(0, order):
+                key = str(i) + 'x' + str(j)
+                try:
+                    get_task = urllib.request.urlopen(REPOSITORY_URL+"/pair_out/"+key)
+                    task_json = get_task.read()
+                    task_dir = json.loads(task_json)
+                except urllib.error.HTTPError:
+                    print("Item not avaliable, try next")
+                    break
 
-            A = eval(set_to_array(matrix_a['content']))
-            B = eval(set_to_array(matrix_b['content']))
+                print(task_dir)
 
-            result = multiply(A, B)
+                # Ever the index 0 is A and 1 is B
+                matrix_a = task_dir[0]
+                matrix_b = task_dir[1]
 
-            print("Result is " + str(result))
+                A = eval(set_to_array(matrix_a['content']))
+                B = eval(set_to_array(matrix_b['content']))
 
-            repo_pair_in(key, str(result))
+                result = multiply(A, B)
+
+                print("Result is " + str(result))
+
+                repo_pair_in(key, str(result))
