@@ -83,10 +83,7 @@ def get_result(order):
             if 'x' in index:
                 results.append(value)
 
-        print("Obtain results:")
-        print(results)
-
-        time.sleep(1)
+        #time.sleep(1)
 
     print("Multiply finished...")
 

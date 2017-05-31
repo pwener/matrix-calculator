@@ -37,7 +37,7 @@ if __name__ == '__main__':
     while (True):
 
         # Not so fast
-        time.sleep(0.5)
+        #time.sleep(0.5)
 
         for i in range(0, order):
             for j in range(0, order):
@@ -50,17 +50,18 @@ if __name__ == '__main__':
                     print("Item not avaliable, try next")
                     break
 
-                print(task_dir)
-
                 # Ever the index 0 is A and 1 is B
                 matrix_a = task_dir[0]
                 matrix_b = task_dir[1]
 
-                A = eval(set_to_array(matrix_a['content']))
-                B = eval(set_to_array(matrix_b['content']))
+                if (matrix_a is None or matrix_b is None):
+                    pass
+                else:
+                    A = eval(set_to_array(matrix_a['content']))
+                    B = eval(set_to_array(matrix_b['content']))
 
-                result = multiply(A, B)
+                    result = multiply(A, B)
 
-                print("Result is " + str(result))
+                    print("Result is " + str(result))
 
-                repo_pair_in(key, str(result))
+                    repo_pair_in(key, str(result))
