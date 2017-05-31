@@ -17,7 +17,7 @@ def print_matrix(M):
 
 def repo_request(key, value):
     # repr converts code to string
-    r = requests.post(REPOSITORY_URL + repr(key) + '/' + value)
+    r = requests.post(REPOSITORY_URL + key + '/' + value)
 
 
 def to_hash(arr):
@@ -57,9 +57,11 @@ if __name__ == '__main__':
         matrix = read_matrix(filename)
 
         if option == 'A':
-            create_pairs_with_lines(matrix)
+            for i in range(len(matrix)):
+                create_pairs_with_lines(matrix)
         elif option == 'B':
-            create_pairs_with_columns(matrix)
+            for i in range(len(matrix)):
+                create_pairs_with_columns(matrix)
         else:
             print("Invalid, type A or B has second argument...")
 

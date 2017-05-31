@@ -3,21 +3,25 @@ require 'task_stack'
 class RepositoryController < ApplicationController
 
   # POST /pair_in
+  # This key received is a little different because it
+  # are the line or column index
   def pair_in
     # Add into singleton because rails destroy all data after each request
-    TaskStack.instance.put(params[:index], params[:content])
+    TaskStack.instance.put(params[:key], params[:content])
   end
 
   # GET /pair_out
+  # Key is ixj to i and j integers
   def pair_out
-    tasks = TaskStack.instance.pop
+    tasks = TaskStack.instance.pop(params[:key])
 
     render json: tasks.to_json
   end
 
   # GET /read_pair
+  # Key is ixj to i and j integers
   def read_pair
-    tasks = TaskStack.instance.get(params[:index])
+    tasks = TaskStack.instance.get(params[:key])
 
     render json: tasks.to_json
   end
@@ -31,6 +35,8 @@ class RepositoryController < ApplicationController
     render json: tasks.to_json
   end
 
+  # GET /reset
+  # Clean all data
   def reset
     tasks = TaskStack.instance.clear
 

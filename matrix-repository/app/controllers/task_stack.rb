@@ -4,6 +4,7 @@ class TaskStack
   include Singleton
 
   def initialize
+    # have all tasks
     @tasks = Array.new
     @mutex = Mutex.new
   end
@@ -14,35 +15,52 @@ class TaskStack
     end
   end
 
-  def get(index)
+  def get(key)
     # tasks array the element
     puts "Size of stack is #{@tasks.length}"
-    puts "Request index #{index}"
+    puts "Request key #{key}"
 
-    hash = @tasks.select { |element| element[:index] == index }
+    a_index = key.split('x')[0]
+    b_index = key.split('x')[1]
 
-    return hash
+    select_a = @tasks.detect {|element| element[:index] == 'A' + a_index}
+    select_b = @tasks.detect {|element| element[:index] == 'B' + b_index}
+
+    puts [select_a, select_b]
+
+    return [select_a, select_b]
+  end
+
+  def pop(key)
+    array = nil
+
+    @mutex.synchronize do
+      array = get(key)
+
+      unless array.all?{ |x| x.nil? }
+        puts "pop elements with key #{key}"
+        @tasks.delete_at(@tasks.find_index(array.first))
+        @tasks.delete_at(@tasks.find_index(array.last))
+      else
+        puts "some element is not in repository"
+      end
+    end
+
+    return array
   end
 
   def all
     @tasks
   end
 
-  def pop
-    hash = nil
-
-    @mutex.synchronize do
-      index = @tasks.last[:index]
-      hash = get(index)
-      puts "pop elements with index #{index}"
-      @tasks.delete_if { |element| element[:index] == index }
-    end
-
-    return hash
-  end
-
   def clear
     @tasks = Array.new
+  end
+
+  private
+
+  def get_numeric_index(str)
+    str.delete('^0-9')
   end
 
 end
